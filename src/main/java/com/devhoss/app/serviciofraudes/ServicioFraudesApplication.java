@@ -7,7 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ServicioFraudesApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(ServicioFraudesApplication.class, args);
+	System.out.println("Hola Mundo Fraudes!!");
 	}
 
 }
