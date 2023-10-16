@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-
+@Repository
 public interface IFraudesRepository extends JpaRepository<FraudCustomerCheck, Long> {
 
    Optional<FraudCustomerCheck> findAllByTipoAndValor(String tipo, String valor);
