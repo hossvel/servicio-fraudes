@@ -9,3 +9,7 @@ docker build -t hhvelascoa/appfraudes:v1 .
 
 ## docker push
 docker push hhvelascoa/appfraudes:v1 
+
+## docker compose
+docker-compose up -d , 
+docker-compose down

@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  #database engine service
+  postgres_db:
+    container_name: postgres
+    image: postgres:16.0-alpine
+    restart: always
+    ports:
+      - 5432:5432
+    networks:
+      - fraudes_network
+    volumes:
+      #allow *.sql, *.sql.gz, or *.sh and is execute only if data directory is empty
+      - ./dbfiles:/docker-entrypoint-initdb.d
+      - ./postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: sasa
+      POSTGRES_DB: db_fraudes
+
+  fraudes-backend:
+    container_name: fraudes-svc
+    image: hhvelascoa/appfraudes:v1
+    networks:
+      -  fraudes_network
+    ports:
+      - "8085:8085"
+    depends_on:
+      - postgres_db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres_db:5432/db_fraudes
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=sasa
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+networks:
+  fraudes_network:
+    driver: bridge
+    ipam:
+      driver: default
+
