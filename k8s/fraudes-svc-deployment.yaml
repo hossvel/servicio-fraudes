@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fraudes-svc-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fraudes-svc
+  template:
+    metadata:
+      labels:
+        app: fraudes-svc
+    spec:
+      containers:
+        - image: hhvelascoa/appfraudes:v1
+          name: fraudes-svc
+          ports:
+            - containerPort: 8085
+          env:
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: sasa
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgresql:5432/db_fraudes?useSSL=false
+            - name: SPRING_DATASOURCE_USERNAME
+              value: postgres
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              value: update
