@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgresql-initdb-configmap
+  namespace: default
+data:
+  # docker-entrypoint.sh supports sql scripts but we need to expand variables.
+  init-user-db.sh: |
+       psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<- EOF
+                  CREATE USER dockerapp WITH PASSWORD 'sasa';
+                  ALTER USER dockerapp WITH SUPERUSER;
+                  CREATE DATABASE db_fraudes;
+                  GRANT ALL PRIVILEGES ON DATABASE db_fraudes TO dockerapp;
+                  GRANT ALL ON SCHEMA public TO dockerapp;
+       EOF
